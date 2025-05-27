@@ -30,10 +30,8 @@ const id = 'ivy-glsp-process-viewer';
 const diagramType = 'ivy-glsp-process';
 const clientId = ApplicationIdProvider.get() + '_' + sourceUri + pid;
 
-const webSocketBase = `${isSecureConnection() ? 'wss' : 'wss'}://${server}/`;
-const webSocketUrl = `${webSocketBase}${isNeoDesigner() ? `~${app}\\${app}` : app}/${id}`;
-console.warn('isSecureConnection ' + isSecureConnection());
-console.warn('isNeoDesigner ' + isNeoDesigner());
+const webSocketBase = `${isSecureConnection() ? 'wss' : 'ws'}://${server}/`;
+const webSocketUrl = `${webSocketBase}${isNeoDesigner() ? `~${app}/${app}` : app}/${id}`;
 
 let glspClient: GLSPClient;
 let container: Container;
