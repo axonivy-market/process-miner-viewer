@@ -18,3 +18,7 @@ export function isInPreviewMode(): boolean {
 export function getParameters() {
   return new URLSearchParams(window.location.search);
 }
+
+export function isNeoDesigner(): boolean {
+  return window.location.origin == 'https://neo.axonivy.io';
+}

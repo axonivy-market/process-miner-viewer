@@ -6,7 +6,7 @@ import { Container } from 'inversify';
 import type { MessageConnection } from 'vscode-jsonrpc';
 import createContainer from './di.config';
 import './index.css';
-import { getParameters, getServerDomain, isSecureConnection } from './url-helper';
+import { getParameters, getServerDomain, isSecureConnection, isNeoDesigner } from './url-helper';
 import { MiningUrl } from './process-mining-visualisation/mining-action';
 
 const parameters = getParameters();
@@ -30,27 +30,15 @@ const id = 'ivy-glsp-process-viewer';
 const diagramType = 'ivy-glsp-process';
 const clientId = ApplicationIdProvider.get() + '_' + sourceUri + pid;
 
-const webSocketBase = `${isSecureConnection() ? 'wss' : 'ws'}://${server}/`;
-const webSocketUrl = `${webSocketBase}${app}/${id}`;
+const webSocketBase = `${isSecureConnection() ? 'wss' : 'wss'}://${server}/`;
+const webSocketUrl = `${webSocketBase}${isNeoDesigner() ? `~${app}\\${app}` : app}/${id}`;
+console.warn('isSecureConnection ' + isSecureConnection());
+console.warn('isNeoDesigner ' + isNeoDesigner());
 
 let glspClient: GLSPClient;
 let container: Container;
 const wsProvider = new GLSPWebSocketProvider(webSocketUrl, { reconnectDelay: 5000, reconnectAttempts: 120 });
 wsProvider.listen({ onConnection: initialize, onReconnect: reconnect, logger: console });
-console.warn('app ' + app);
-console.warn('server ' + server);
-
-console.warn('miningUrlParam ' + miningUrlParam);
-console.warn('pmv ' + pmv);
-console.warn('pid ' + pid);
-console.warn('sourceUri ' + sourceUri);
-console.warn('highlight ' + highlight);
-console.warn('select ' + select);
-console.warn('zoom ' + zoom);
-console.warn('theme ' + theme);
-console.warn('clientId ' + clientId);
-console.warn('webSocketBase ' + webSocketBase);
-console.warn('webSocketUrl ' + webSocketUrl);
 
 async function initialize(connectionProvider: MessageConnection, isReconnecting = true): Promise<void> {
   glspClient = new IvyBaseJsonrpcGLSPClient({ id, connectionProvider });
