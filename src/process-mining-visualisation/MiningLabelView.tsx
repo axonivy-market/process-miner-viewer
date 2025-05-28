@@ -20,15 +20,24 @@ export class MiningLabelView extends GLabelView {
     const segments = label.segments;
     const p1 = segments[segments.length - 2];
     const p2 = segments[segments.length - 1];
+
+    // Direction vector from p1 to p2
+    const dx = p2.x - p1.x;
+    const dy = p2.y - p1.y;
+
+    // Total length of the segment
+    const length = Math.sqrt(dx * dx + dy * dy);
+    const offset = 20
+    // Unit vector (direction)
+    const ux = dx / length;
+    const uy = dy / length;
+
+    // Point near the arrow tip, offset back a bit
     const p = {
-      x: p2.x - (p2.x - p1.x) / 2,
-      y: p2.y - (p2.y - p1.y) / 2
+      x: p2.x - ux * offset,
+      y: p2.y - uy * offset
     };
-    if (p2.y - p1.y === 0) {
-      p.x -= 3;
-    } else {
-      p.y -= 3;
-    }
+
     return (
       <g>
         <circle cy={p.y} cx={p.x} stroke='var(--glsp-border)' fill={props.color} stroke-width='0' r={props.r}></circle>
