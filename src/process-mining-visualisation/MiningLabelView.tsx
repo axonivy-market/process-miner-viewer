@@ -27,6 +27,7 @@ export class MiningLabelView extends GLabelView {
 
     // Total length of the segment
     const length = Math.sqrt(dx * dx + dy * dy);
+    //The distance between the number circle and the top of the arrow
     const offset = 20
     // Unit vector (direction)
     const ux = dx / length;
