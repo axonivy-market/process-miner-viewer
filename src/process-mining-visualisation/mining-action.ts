@@ -27,6 +27,7 @@ export interface Period {
  * interface used to define the properties of the fetched mining-data
  */
 export interface MiningData {
+  colors: string[];
   processName: string;
   analysisType: string;
   numberOfInstances: number;
@@ -44,6 +45,11 @@ export interface MiningNode {
 @injectable()
 export class MiningUrl {
   readonly url: string;
+}
+
+@injectable()
+export class TEST {
+  colors: string[];
 }
 
 /**
@@ -69,6 +75,7 @@ export namespace MiningAction {
 export class MiningCommand extends Command {
   static readonly KIND = MiningAction.KIND;
   @inject(MiningUrl) protected miningData: MiningUrl;
+  @inject(TEST) protected test: TEST;
   constructor(@inject(TYPES.Action) protected readonly action: MiningAction) {
     super();
   }
@@ -87,6 +94,7 @@ export class MiningCommand extends Command {
   async populate(model: SModelRootImpl) {
     // fetches mining-data from the provided url
     const data: MiningData = await (await fetch(this.miningData.url)).json();
+    this.test.colors = data.colors;
     // adds MiningLabel for each provided edge
     data.nodes.forEach(node => {
       const edge = model.index.getById(node.id);

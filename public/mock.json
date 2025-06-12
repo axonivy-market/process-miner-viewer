@@ -1,6 +1,18 @@
 {
   "processName": "ExampleProcess",
   "analysisType": "frequency",
+  "colors": [
+    "#FFF7EA",
+    "#FFEDCD",
+    "#FFDEA5",
+    "#FFCE7B",
+    "#FFC054",
+    "#FFB22E",
+    "#D99727",
+    "#B57E21",
+    "#91651A",
+    "#735015"
+  ],
   "nodes": [
     {
       "type": "arrow",
