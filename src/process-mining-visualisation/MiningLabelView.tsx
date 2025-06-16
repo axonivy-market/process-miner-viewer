@@ -2,7 +2,7 @@ import { svg, GLabelView } from '@eclipse-glsp/client';
 import type { VNode } from 'snabbdom';
 import { inject, injectable } from 'inversify';
 import { MiningLabel } from './MiningLabel';
-import { MiningColor } from './mining-action';
+import { miningColor, MiningColor } from './mining-action';
 
 const JSX = { createElement: svg };
 
@@ -13,12 +13,12 @@ const JSX = { createElement: svg };
  */
 @injectable()
 export class MiningLabelView extends GLabelView {
-  @inject(MiningColor) protected colorSegment: MiningColor;
+  @inject(MiningColor) colorSegment: MiningColor;
   render(label: MiningLabel): VNode | undefined {
     if (label.segments.length < 2) {
       return;
     }
-    const props = this.getCircleProps(label.relativeValue, this.colorSegment.colors);
+    const props = this.getCircleProps(label.relativeValue, miningColor.colors);
     const segments = label.segments;
     const p1 = segments[segments.length - 2];
     const p2 = segments[segments.length - 1];
@@ -51,46 +51,51 @@ export class MiningLabelView extends GLabelView {
     );
   }
 
-  getCircleProps = (value: number, colors: string[]): { r: number; color: string; textColor: string } => {
+  getCircleProps = (
+    value: number,
+    colors: string[]
+  ): { r: number; color: string; textColor: string } => {
     const props = { r: 10, color: 'white', textColor: 'black' };
-    if (value <= 0.1) {
-      props.r = 9.4;
-      props.color = colors[0];
-    } else if (value <= 0.2) {
-      props.r = 9.8;
-      props.color = colors[1];
-    } else if (value <= 0.3) {
-      props.r = 10.2;
-      props.color = colors[2];
-    } else if (value <= 0.4) {
-      props.r = 10.6;
-      props.color = colors[3];
-      props.textColor = '#ffffff';
-    } else if (value <= 0.5) {
-      props.r = 11;
-      props.color = colors[4];
-      props.textColor = '#ffffff';
-    } else if (value <= 0.6) {
-      props.r = 11.4;
-      props.color = colors[5];
-      props.textColor = '#ffffff';
-    } else if (value <= 0.7) {
-      props.r = 11.8;
-      props.color = colors[6];
-      props.textColor = '#ffffff';
-    } else if (value <= 0.8) {
-      props.r = 12.2;
-      props.color = colors[7];
-      props.textColor = '#ffffff';
-    } else if (value <= 0.9) {
-      props.r = 12.6;
-      props.color = colors[8];
-      props.textColor = '#ffffff';
-    } else if (value <= 1) {
-      props.r = 13;
-      props.color = colors[9];
-      props.textColor = '#ffffff';
-    }
+
+    let index = Math.floor(value * 10);
+    index = Math.min(Math.max(index, 0), colors.length - 1);
+
+    const color = colors[index];
+    props.color = color;
+    props.r = 9.4 + index * 0.4;
+    props.textColor = this.getAccessibleTextColor(color);
+
     return props;
   };
+
+  getAccessibleTextColor(bgColor: string): string {
+    const toRgb = (hex: string) => {
+      const val = hex.replace('#', '');
+      const num = parseInt(val, 16);
+      return {
+        r: (num >> 16) & 255,
+        g: (num >> 8) & 255,
+        b: num & 255
+      };
+    };
+
+    const luminance = ({ r, g, b }: { r: number; g: number; b: number }) => {
+      const a = [r, g, b].map(v => {
+        v /= 255;
+        return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+      });
+      return 0.2126 * a[0] + 0.7152 * a[1] + 0.0722 * a[2];
+    };
+
+    const contrast = (hex1: string, hex2: string) => {
+      const l1 = luminance(toRgb(hex1));
+      const l2 = luminance(toRgb(hex2));
+      return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
+    };
+
+    const black = '#000000';
+    const white = '#ffffff';
+
+    return contrast(bgColor, white) >= contrast(bgColor, black) ? white : black;
+  }
 }

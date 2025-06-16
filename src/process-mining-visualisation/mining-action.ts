@@ -52,6 +52,12 @@ export class MiningColor {
   colors: string[];
 }
 
+export let miningColor: MiningColor;
+
+export function setMiningColor(color: MiningColor) {
+  miningColor = color;
+}
+
 /**
  * Action which is fired when the Mining-Data is to be displayed
  */

@@ -7,7 +7,7 @@ import type { MessageConnection } from 'vscode-jsonrpc';
 import createContainer from './di.config';
 import './index.css';
 import { getParameters, getServerDomain, isSecureConnection } from './url-helper';
-import { MiningUrl, MiningColor } from './process-mining-visualisation/mining-action';
+import { MiningUrl, MiningColor, setMiningColor } from './process-mining-visualisation/mining-action';
 
 const parameters = getParameters();
 const app = parameters.get('app') ?? 'designer';
@@ -54,7 +54,10 @@ async function initialize(connectionProvider: MessageConnection, isReconnecting 
 
   // binds the mining url as const to be injected into the MiningCommand
   container.bind(MiningUrl).toConstantValue({ url: miningUrlParam });
-  container.bind(MiningColor).toSelf();
+  container.bind(MiningColor).toSelf().inSingletonScope();
+
+  const colorInstance = container.get(MiningColor);
+  setMiningColor(colorInstance);
 
   const diagramLoader = container.get(DiagramLoader);
   await diagramLoader.load({
