@@ -55,20 +55,15 @@ export class MiningLabelView extends GLabelView {
     value: number,
     colors: string[]
   ): { r: number; color: string; textColor: string } => {
-    const props = { r: 10, color: 'white', textColor: 'black' };
-
     let index = Math.floor(value * 10);
     index = Math.min(Math.max(index, 0), colors.length - 1);
-
     const color = colors[index];
-    props.color = color;
-    props.r = 9.4 + index * 0.4;
-    props.textColor = this.getAccessibleTextColor(color);
+    const roundRatio = 9.4 + index * 0.4;
 
-    return props;
+    return { r: roundRatio, color, textColor: this.getAccessibleTextColor(color) };
   };
 
-  getAccessibleTextColor(bgColor: string): string {
+  getAccessibleTextColor(backgroundColor: string): string {
     const toRgb = (color: string): { r: number; g: number; b: number } => {
       if (color.startsWith('#')) {
         const val = color.replace('#', '');
@@ -93,7 +88,8 @@ export class MiningLabelView extends GLabelView {
       }
     };
 
-    const luminance = ({ r, g, b }: { r: number; g: number; b: number }): number => {
+     // Calculate the relative luminance of an RGB color
+    const calculateLuminance = ({ r, g, b }: { r: number; g: number; b: number }): number => {
       const a = [r, g, b].map(v => {
         v /= 255;
         return v <= 0.03928
@@ -103,15 +99,16 @@ export class MiningLabelView extends GLabelView {
       return 0.2126 * a[0] + 0.7152 * a[1] + 0.0722 * a[2];
     };
 
+    // Calculate the contrast ratio between two colors using luminance values
     const contrast = (c1: string, c2: string): number => {
-      const l1 = luminance(toRgb(c1));
-      const l2 = luminance(toRgb(c2));
+      const l1 = calculateLuminance(toRgb(c1));
+      const l2 = calculateLuminance(toRgb(c2));
       return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
     };
 
     const black = '#000000';
     const white = '#ffffff';
 
-    return contrast(bgColor, white) >= contrast(bgColor, black) ? white : black;
+    return contrast(backgroundColor, white) >= contrast(backgroundColor, black) ? white : black;
   }
 }
