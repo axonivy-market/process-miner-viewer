@@ -69,27 +69,43 @@ export class MiningLabelView extends GLabelView {
   };
 
   getAccessibleTextColor(bgColor: string): string {
-    const toRgb = (hex: string) => {
-      const val = hex.replace('#', '');
-      const num = parseInt(val, 16);
-      return {
-        r: (num >> 16) & 255,
-        g: (num >> 8) & 255,
-        b: num & 255
-      };
+    const toRgb = (color: string): { r: number; g: number; b: number } => {
+      if (color.startsWith('#')) {
+        const val = color.replace('#', '');
+        const bigint = parseInt(val, 16);
+        return {
+          r: (bigint >> 16) & 255,
+          g: (bigint >> 8) & 255,
+          b: bigint & 255
+        };
+      } else if (color.startsWith('rgb')) {
+        const matches = color.match(/\d+/g);
+        if (!matches || matches.length < 3) {
+          throw new Error(`Invalid rgb() format: ${color}`);
+        }
+        return {
+          r: parseInt(matches[0]),
+          g: parseInt(matches[1]),
+          b: parseInt(matches[2])
+        };
+      } else {
+        throw new Error(`Unsupported color format: ${color}`);
+      }
     };
 
-    const luminance = ({ r, g, b }: { r: number; g: number; b: number }) => {
+    const luminance = ({ r, g, b }: { r: number; g: number; b: number }): number => {
       const a = [r, g, b].map(v => {
         v /= 255;
-        return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+        return v <= 0.03928
+          ? v / 12.92
+          : Math.pow((v + 0.055) / 1.055, 2.4);
       });
       return 0.2126 * a[0] + 0.7152 * a[1] + 0.0722 * a[2];
     };
 
-    const contrast = (hex1: string, hex2: string) => {
-      const l1 = luminance(toRgb(hex1));
-      const l2 = luminance(toRgb(hex2));
+    const contrast = (c1: string, c2: string): number => {
+      const l1 = luminance(toRgb(c1));
+      const l2 = luminance(toRgb(c2));
       return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
     };
 
