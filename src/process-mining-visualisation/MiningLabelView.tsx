@@ -2,7 +2,7 @@ import { svg, GLabelView } from '@eclipse-glsp/client';
 import type { VNode } from 'snabbdom';
 import { inject, injectable } from 'inversify';
 import { MiningLabel } from './MiningLabel';
-import { miningColor, MiningColor } from './mining-action';
+import { miningColor, MiningColor, miningTextColor, MiningTextColor } from './mining-action';
 
 const JSX = { createElement: svg };
 
@@ -14,11 +14,12 @@ const JSX = { createElement: svg };
 @injectable()
 export class MiningLabelView extends GLabelView {
   @inject(MiningColor) colorSegment: MiningColor;
+  @inject(MiningTextColor) textColor: MiningTextColor;
   render(label: MiningLabel): VNode | undefined {
     if (label.segments.length < 2) {
       return;
     }
-    const props = this.getCircleProps(label.relativeValue, miningColor.colors);
+    const props = this.getCircleProps(label.relativeValue, miningColor.colors, miningTextColor.textColor);
     const segments = label.segments;
     const p1 = segments[segments.length - 2];
     const p2 = segments[segments.length - 1];
@@ -51,64 +52,13 @@ export class MiningLabelView extends GLabelView {
     );
   }
 
-  getCircleProps = (
-    value: number,
-    colors: string[]
-  ): { r: number; color: string; textColor: string } => {
+  getCircleProps = (value: number, colors: string[], textColors: string[]): { r: number; color: string; textColor: string } => {
     let index = Math.floor(value * 10);
     index = Math.min(Math.max(index, 0), colors.length - 1);
     const color = colors[index];
+    const textColor = textColors[index];
     const roundRatio = 9.4 + index * 0.4;
 
-    return { r: roundRatio, color, textColor: this.getAccessibleTextColor(color) };
+    return { r: roundRatio, color, textColor };
   };
-
-  getAccessibleTextColor(backgroundColor: string): string {
-    const toRgb = (color: string): { r: number; g: number; b: number } => {
-      if (color.startsWith('#')) {
-        const val = color.replace('#', '');
-        const bigint = parseInt(val, 16);
-        return {
-          r: (bigint >> 16) & 255,
-          g: (bigint >> 8) & 255,
-          b: bigint & 255
-        };
-      } else if (color.startsWith('rgb')) {
-        const matches = color.match(/\d+/g);
-        if (!matches || matches.length < 3) {
-          throw new Error(`Invalid rgb() format: ${color}`);
-        }
-        return {
-          r: parseInt(matches[0]),
-          g: parseInt(matches[1]),
-          b: parseInt(matches[2])
-        };
-      } else {
-        throw new Error(`Unsupported color format: ${color}`);
-      }
-    };
-
-     // Calculate the relative luminance of an RGB color
-    const calculateLuminance = ({ r, g, b }: { r: number; g: number; b: number }): number => {
-      const a = [r, g, b].map(v => {
-        v /= 255;
-        return v <= 0.03928
-          ? v / 12.92
-          : Math.pow((v + 0.055) / 1.055, 2.4);
-      });
-      return 0.2126 * a[0] + 0.7152 * a[1] + 0.0722 * a[2];
-    };
-
-    // Calculate the contrast ratio between two colors using luminance values
-    const contrast = (c1: string, c2: string): number => {
-      const l1 = calculateLuminance(toRgb(c1));
-      const l2 = calculateLuminance(toRgb(c2));
-      return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
-    };
-
-    const black = '#000000';
-    const white = '#ffffff';
-
-    return contrast(backgroundColor, white) >= contrast(backgroundColor, black) ? white : black;
-  }
 }

@@ -27,12 +27,13 @@ export interface Period {
  * interface used to define the properties of the fetched mining-data
  */
 export interface MiningData {
-  colors: string[];
   processName: string;
   analysisType: string;
   numberOfInstances: number;
   nodes: MiningNode[];
   timeFrame: Period;
+  colors: string[];
+  textColor: string[];
 }
 
 export interface MiningNode {
@@ -56,6 +57,17 @@ export let miningColor: MiningColor;
 
 export function setMiningColor(color: MiningColor) {
   miningColor = color;
+}
+
+@injectable()
+export class MiningTextColor {
+  textColor: string[];
+}
+
+export let miningTextColor: MiningTextColor;
+
+export function setMiningTextColor(textColor: MiningTextColor) {
+  miningTextColor = textColor;
 }
 
 /**
@@ -82,6 +94,7 @@ export class MiningCommand extends Command {
   static readonly KIND = MiningAction.KIND;
   @inject(MiningUrl) protected miningData: MiningUrl;
   @inject(MiningColor) protected colorSegment: MiningColor;
+  @inject(MiningTextColor) protected text: MiningTextColor;
   constructor(@inject(TYPES.Action) protected readonly action: MiningAction) {
     super();
   }
@@ -101,6 +114,7 @@ export class MiningCommand extends Command {
     // fetches mining-data from the provided url
     const data: MiningData = await (await fetch(this.miningData.url)).json();
     this.colorSegment.colors = data.colors;
+    this.text.textColor = data.textColor;
     // adds MiningLabel for each provided edge
     data.nodes.forEach(node => {
       const edge = model.index.getById(node.id);
