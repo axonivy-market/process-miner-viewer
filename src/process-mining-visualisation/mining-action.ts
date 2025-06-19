@@ -32,6 +32,8 @@ export interface MiningData {
   numberOfInstances: number;
   nodes: MiningNode[];
   timeFrame: Period;
+  colors: string[];
+  textColors: string[];
 }
 
 export interface MiningNode {
@@ -44,6 +46,28 @@ export interface MiningNode {
 @injectable()
 export class MiningUrl {
   readonly url: string;
+}
+
+@injectable()
+export class MiningColor {
+  colors: string[];
+}
+
+export let miningColor: MiningColor;
+
+export function setMiningColor(color: MiningColor) {
+  miningColor = color;
+}
+
+@injectable()
+export class MiningTextColor {
+  textColor: string[];
+}
+
+export let miningTextColor: MiningTextColor;
+
+export function setMiningTextColor(textColor: MiningTextColor) {
+  miningTextColor = textColor;
 }
 
 /**
@@ -69,6 +93,8 @@ export namespace MiningAction {
 export class MiningCommand extends Command {
   static readonly KIND = MiningAction.KIND;
   @inject(MiningUrl) protected miningData: MiningUrl;
+  @inject(MiningColor) protected colorSegment: MiningColor;
+  @inject(MiningTextColor) protected text: MiningTextColor;
   constructor(@inject(TYPES.Action) protected readonly action: MiningAction) {
     super();
   }
@@ -87,6 +113,8 @@ export class MiningCommand extends Command {
   async populate(model: SModelRootImpl) {
     // fetches mining-data from the provided url
     const data: MiningData = await (await fetch(this.miningData.url)).json();
+    this.colorSegment.colors = data.colors;
+    this.text.textColor = data.textColors;
     // adds MiningLabel for each provided edge
     data.nodes.forEach(node => {
       const edge = model.index.getById(node.id);

@@ -1,7 +1,8 @@
 import { svg, GLabelView } from '@eclipse-glsp/client';
 import type { VNode } from 'snabbdom';
-import { injectable } from 'inversify';
+import { inject, injectable } from 'inversify';
 import { MiningLabel } from './MiningLabel';
+import { miningColor, MiningColor, miningTextColor, MiningTextColor } from './mining-action';
 
 const JSX = { createElement: svg };
 
@@ -12,11 +13,13 @@ const JSX = { createElement: svg };
  */
 @injectable()
 export class MiningLabelView extends GLabelView {
+  @inject(MiningColor) colorSegment: MiningColor;
+  @inject(MiningTextColor) textColor: MiningTextColor;
   render(label: MiningLabel): VNode | undefined {
     if (label.segments.length < 2) {
       return;
     }
-    const props = this.getCircleProps(label.relativeValue);
+    const props = this.getCircleProps(label.relativeValue, miningColor.colors, miningTextColor.textColor);
     const segments = label.segments;
     const p1 = segments[segments.length - 2];
     const p2 = segments[segments.length - 1];
@@ -49,22 +52,13 @@ export class MiningLabelView extends GLabelView {
     );
   }
 
-  getCircleProps = (value: number): { r: number; color: string; textColor: string } => {
-    const props = { r: 10, color: 'white', textColor: 'black' };
-    if (value <= 0.25) {
-      props.r = 10;
-      props.color = '#c8f0d4';
-    } else if (value <= 0.5) {
-      props.r = 11;
-      props.color = '#87dea1';
-    } else if (value <= 0.75) {
-      props.r = 12;
-      props.color = '#4ccd73';
-    } else if (value <= 1) {
-      props.r = 13;
-      props.color = '#205630';
-      props.textColor = '#ffffff';
-    }
-    return props;
+  getCircleProps = (value: number, colors: string[], textColors: string[]): { r: number; color: string; textColor: string } => {
+    let index = Math.floor(value * 10);
+    index = Math.min(Math.max(index, 0), colors.length - 1);
+    const color = colors[index];
+    const textColor = textColors[index];
+    const roundRatio = 9.4 + index * 0.4;
+
+    return { r: roundRatio, color, textColor };
   };
 }
