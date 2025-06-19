@@ -33,7 +33,7 @@ export interface MiningData {
   nodes: MiningNode[];
   timeFrame: Period;
   colors: string[];
-  textColor: string[];
+  textColors: string[];
 }
 
 export interface MiningNode {
@@ -114,7 +114,7 @@ export class MiningCommand extends Command {
     // fetches mining-data from the provided url
     const data: MiningData = await (await fetch(this.miningData.url)).json();
     this.colorSegment.colors = data.colors;
-    this.text.textColor = data.textColor;
+    this.text.textColor = data.textColors;
     // adds MiningLabel for each provided edge
     data.nodes.forEach(node => {
       const edge = model.index.getById(node.id);
