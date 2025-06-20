@@ -1,8 +1,10 @@
-name: CI Pipeline
+name: CI-Build
 
-on:
+on:  
+  push:
+  pull_request:
   schedule:
-    - cron: '0 0 * * *'  # every day at midnight UTC
+    - cron: '21 21 * * *'  # every day at midnight UTC
   workflow_dispatch:
     inputs:
       engineSource:
