@@ -49,9 +49,9 @@ pipeline {
       }
     }
   }
-  post {
-    always {
-      discoverGitReferenceBuild()
-    }
-  }
+  // post {
+  //   always {
+  //     discoverGitReferenceBuild()
+  //   }
+  // }
 }
