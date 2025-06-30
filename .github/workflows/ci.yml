@@ -13,7 +13,7 @@ on:
         default: 'https://product.ivyteam.io/'
 
 env:
-  ENGINE_SOURCE: ${{ github.event.inputs.engineSource || 'https://product.ivyteam.io/' }}
+  ENGINE_SOURCE: ${{ github.event.inputs.engineSource || 'https://developer.axonivy.com/permalink/13.1.0/axonivy-engine.zip' }}
 
 jobs:
   build:
