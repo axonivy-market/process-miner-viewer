@@ -16,6 +16,10 @@ properties([
 pipeline {
   agent any
 
+  environment {
+    PROCESS_MINER_VIEWER_GIT_URL = credentials('PROCESS_MINER_VIEWER_GIT_URL')
+  }
+
   options {
     buildDiscarder(logRotator(numToKeepStr: '30', artifactNumToKeepStr: '5'))
   }
@@ -36,7 +40,7 @@ pipeline {
           def fullName = "system"
           if (userId) {
             def user = jenkins.model.Jenkins.instance.getUser(userId)
-            fullName = user?.getDisplayName() ? : userId
+            fullName = user?.getDisplayName() ?: userId
           }
           currentBuild.displayName = "Build #${env.BUILD_NUMBER} on branch ${BRANCH} - trigger by ${fullName}"
         }
@@ -55,7 +59,7 @@ pipeline {
       steps {
         script {
           catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE') {
-            docker.build('node', '-f build/Dockerfile.node .').inside('--user 0') {
+            docker.build('node', '-f .build/Dockerfile.node .').inside('--user 0') {
               sh 'npm install --unsafe-perm'
               sh 'npm run ci'
             }
@@ -74,7 +78,7 @@ pipeline {
       steps {
         script {
           catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE') {
-            docker.build('node-webtest', '-f build/Dockerfile.playwright .').inside {
+            docker.build('node-webtest', '-f .build/Dockerfile.playwright .').inside('--user 0') {
               dir('tests/miner-test-project') {
                 maven cmd: "-ntp verify -Dengine.page.url=${params.engineSource}"
               }
