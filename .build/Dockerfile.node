@@ -1,2 +1,4 @@
 FROM node:22.14-bookworm
 ENV CI=true
+RUN useradd --create-home --shell /bin/bash nodeuser
+USER nodeuser
