@@ -1,4 +1,18 @@
 FROM node:22.14-bookworm
+
+# Allow UID and GID to be passed in at build time
+ARG USER_ID
+ARG GROUP_ID
+
+# Set non-root environment
 ENV CI=true
-RUN useradd --create-home --shell /bin/bash nodeuser
-USER nodeuser
+
+# Create a group and user with the specified UID and GID
+RUN groupadd -g ${GROUP_ID:-1000} appgroup && \
+    useradd -m -u ${USER_ID:-1000} -g appgroup -s /bin/bash appuser
+
+# Use that user from now on
+USER appuser
+
+# Set a working directory for the user
+WORKDIR /home/appuser
