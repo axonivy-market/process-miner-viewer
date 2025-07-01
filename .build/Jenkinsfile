@@ -1,3 +1,18 @@
+properties([
+  parameters([
+    [$class: 'GitParameterDefinition',
+      name: 'BRANCH',
+      type: 'PT_BRANCH',
+      defaultValue: 'origin/master',
+      description: 'Choose your GitHub branch',
+      branchFilter: '.*',
+      tagFilter: '*',
+      sortMode: 'NONE',
+      selectedValue: 'DEFAULT',
+      quickFilterEnabled: true
+    ]
+  ])
+])
 pipeline {
   agent any
 
@@ -14,19 +29,43 @@ pipeline {
   }
 
   stages {
+    stage('Set Display Name') {
+      steps {
+        script {
+          def userId = currentBuild.getBuildCauses('hudson.model.Cause$UserIdCause')[0]?.userId
+          def fullName = "system"
+          if (userId) {
+            def user = jenkins.model.Jenkins.instance.getUser(userId)
+            fullName = user?.getDisplayName() ? : userId
+          }
+          currentBuild.displayName = "Build #${env.BUILD_NUMBER} on branch ${BRANCH} - trigger by ${fullName}"
+        }
+      }
+    }
+
+    stage('Checkout Source') {
+      steps {
+        script {
+          def gitBranch = params.BRANCH.replaceFirst(/^origin\//, '')
+          git branch: gitBranch, url: env.PROCESS_MINER_VIEWER_GIT_URL
+        }
+      }
+    }
     stage('Build') {
       steps {
         script {
           catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE') {
-            docker.build('node', '-f build/Dockerfile.node .').inside {
-              // sh 'npm run update:axonivy:next'
+            docker.build('node', '-f build/Dockerfile.node .').inside('--user 0') {
+              sh 'npm install --unsafe-perm'
               sh 'npm run ci'
             }
           }
           archiveArtifacts artifacts: 'dist', allowEmptyArchive: true
 
           withChecks('ESLint') {
-            recordIssues enabledForFailure: true, publishAllIssues: true, aggregatingResults: true, tools: [esLint(pattern: 'eslint.xml')], qualityGates: [[threshold: 1, type: 'TOTAL', unstable: true]]
+            recordIssues enabledForFailure: true, publishAllIssues: true, aggregatingResults: true, tools: [esLint(pattern: 'eslint.xml')], qualityGates: [
+              [threshold: 1, type: 'TOTAL', unstable: true]
+            ]
           }
         }
       }
@@ -36,22 +75,24 @@ pipeline {
         script {
           catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE') {
             docker.build('node-webtest', '-f build/Dockerfile.playwright .').inside {
-              dir ('tests/miner-test-project') {
+              dir('tests/miner-test-project') {
                 maven cmd: "-ntp verify -Dengine.page.url=${params.engineSource}"
               }
             }
           }
           archiveArtifacts artifacts: 'test-results/**', allowEmptyArchive: true
           withChecks('Integration WebTest') {
-            junit testDataPublishers: [[$class: 'StabilityTestDataPublisher']], testResults: 'report.xml'
+            junit testDataPublishers: [
+              [$class: 'StabilityTestDataPublisher']
+            ], testResults: 'report.xml'
           }
         }
       }
     }
   }
-  // post {
-  //   always {
-  //     discoverGitReferenceBuild()
-  //   }
-  // }
+  post {
+    always {
+      discoverGitReferenceBuild()
+    }
+  }
 }
