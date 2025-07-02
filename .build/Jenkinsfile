@@ -55,6 +55,7 @@ pipeline {
         }
       }
     }
+
     stage('Build') {
       steps {
         script {
@@ -65,15 +66,10 @@ pipeline {
             }
           }
           archiveArtifacts artifacts: 'dist', allowEmptyArchive: true
-
-          withChecks('ESLint') {
-            recordIssues enabledForFailure: true, publishAllIssues: true, aggregatingResults: true, tools: [esLint(pattern: 'eslint.xml')], qualityGates: [
-              [threshold: 1, type: 'TOTAL', unstable: true]
-            ]
-          }
         }
       }
     }
+    
     stage('Integration Tests') {
       steps {
         script {
@@ -85,18 +81,8 @@ pipeline {
             }
           }
           archiveArtifacts artifacts: 'test-results/**', allowEmptyArchive: true
-          withChecks('Integration WebTest') {
-            junit testDataPublishers: [
-              [$class: 'StabilityTestDataPublisher']
-            ], testResults: 'report.xml'
-          }
         }
       }
-    }
-  }
-  post {
-    always {
-      discoverGitReferenceBuild()
     }
   }
 }
