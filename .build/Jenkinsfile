@@ -55,7 +55,6 @@ pipeline {
         }
       }
     }
-
     stage('Build') {
       steps {
         script {
@@ -65,11 +64,11 @@ pipeline {
               sh 'npm run ci'
             }
           }
-          archiveArtifacts artifacts: 'dist', allowEmptyArchive: true
+          archiveArtifacts artifacts: 'dist/**', allowEmptyArchive: true
+          archiveArtifacts artifacts: 'eslint.xml', allowEmptyArchive: true
         }
       }
     }
-    
     stage('Integration Tests') {
       steps {
         script {
