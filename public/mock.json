@@ -1,107 +1,123 @@
 {
   "processName": "ExampleProcess",
-  "analysisType": "frequency",
   "nodes": [
+    {
+      "type": "node",
+      "id": "1951D3C5BF69ADB3-f0",
+      "passed": true
+    },
+    {
+      "type": "node",
+      "id": "1951D3C5BF69ADB3-f19",
+      "passed": true
+    },
+    {
+      "type": "node",
+      "id": "1951D3C5BF69ADB3-f3",
+      "passed": true
+    },
+    {
+      "type": "node",
+      "id": "1951D3C5BF69ADB3-f2",
+      "passed": true
+    },
+    {
+      "type": "node",
+      "id": "1951D3C5BF69ADB3-f6",
+      "passed": true
+    },
+    {
+      "type": "node",
+      "id": "1951D3C5BF69ADB3-f5",
+      "passed": true
+    },
+    {
+      "type": "node",
+      "id": "1951D3C5BF69ADB3-f7",
+      "passed": true
+    },
+    {
+      "type": "node",
+      "id": "1951D3C5BF69ADB3-f26",
+      "passed": true
+    },
+    {
+      "type": "node",
+      "id": "1951D3C5BF69ADB3-f16",
+      "passed": false
+    },
+    {
+      "type": "node",
+      "id": "1951D3C5BF69ADB3-f8",
+      "passed": false
+    },
+    {
+      "type": "node",
+      "id": "1951D3C5BF69ADB3-f1",
+      "passed": false
+    },
     {
       "type": "arrow",
       "id": "1951D3C5BF69ADB3-f15",
-      "relativeValue": 0.15,
-      "labelValue": 130
+      "passed": false
     },
     {
       "type": "arrow",
       "id": "1951D3C5BF69ADB3-f20",
-      "relativeValue": 0.25,
-      "labelValue": 120
+      "passed": true
     },
     {
       "type": "arrow",
       "id": "1951D3C5BF69ADB3-f13",
-      "relativeValue": 0.35,
-      "labelValue": 100
+      "passed": true
     },
     {
       "type": "arrow",
       "id": "1951D3C5BF69ADB3-f12",
-      "relativeValue": 0.45,
-      "labelValue": 90
+      "passed": true
     },
     {
       "type": "arrow",
       "id": "1951D3C5BF69ADB3-f9",
-      "relativeValue": 0.55,
-      "labelValue": 80
+      "passed": true
     },
     {
       "type": "arrow",
       "id": "1951D3C5BF69ADB3-f27",
-      "relativeValue": 0.65,
-      "labelValue": 70
+      "passed": true
     },
     {
       "type": "arrow",
       "id": "1951D3C5BF69ADB3-f21",
-      "relativeValue": 0.75,
-      "labelValue": 60
+      "passed": false
     },
     {
       "type": "arrow",
       "id": "1951D3C5BF69ADB3-f10",
-      "relativeValue": 0.9,
-      "labelValue": 50
+      "passed": true
     },
     {
       "type": "arrow",
       "id": "1951D3C5BF69ADB3-f11",
-      "relativeValue": 0.15,
-      "labelValue": 40
+      "passed": true
     },
     {
       "type": "arrow",
       "id": "1951D3C5BF69ADB3-f4",
-      "relativeValue": 0.15,
-      "labelValue": 30
+      "passed": true
     },
     {
       "type": "arrow",
       "id": "1951D3C5BF69ADB3-f18",
-      "relativeValue": 0.15,
-      "labelValue": 20
+      "passed": false
     },
     {
       "type": "arrow",
       "id": "1951D3C5BF69ADB3-f17",
-      "relativeValue": 0.15,
-      "labelValue": 10
+      "passed": false
     }
   ],
-  "timeFrame": {
-    "start": "2024-01-01T00:00:00Z",
-    "end": "2024-01-31T23:59:59Z"
-  },
-  "numberOfInstances": 1376,
-  "colors": [
-    "#FFF7EA",
-    "#FFEDCD",
-    "#FFDEA5",
-    "#FFCE7B",
-    "#FFC054",
-    "#FFB22E",
-    "#D99727",
-    "#B57E21",
-    "#91651A",
-    "#735015"
-  ],
-  "textColors": [
-    "#000000",
-    "#000000",
-    "#000000",
-    "#000000",
-    "#FFFFFF",
-    "#FFFFFF",
-    "#FFFFFF",
-    "#FFFFFF",
-    "#FFFFFF",
-    "#FFFFFF"
-  ]
+  "activeColor": "#3B82F6",
+  "passedColor": "#47C46B",
+  "activeElementId": "1951D3C5BF69ADB3-f26"
 }

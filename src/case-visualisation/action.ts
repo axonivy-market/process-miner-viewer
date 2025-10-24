@@ -1,11 +1,11 @@
 import { GLSPActionDispatcher, type IActionHandler } from '@eclipse-glsp/client';
 import { inject, injectable } from 'inversify';
-import { MiningAction } from './mining-action';
+import { CaseVisualizationAction } from './case-visualization-action';
 
 @injectable()
-export class SetMiningActionHandler implements IActionHandler {
+export class CaseVisualizationActionHandler implements IActionHandler {
   @inject(GLSPActionDispatcher) protected actionDispatcher: GLSPActionDispatcher;
   handle = (): void => {
-    this.actionDispatcher.dispatch(MiningAction.create());
+    this.actionDispatcher.dispatch(CaseVisualizationAction.create());
   };
 }
