@@ -19,7 +19,7 @@ export class ProcessMiner {
   static async openProcess(page: Page, options?: { urlQueryParam?: string }) {
     await page.goto(
       ProcessMiner.processEditorUrl(page, 'miner-test-project', '/processes/Humantask/ProcurementRequestParallel.p.json') +
-        (options?.urlQueryParam ?? '')
+      (options?.urlQueryParam ?? '')
     );
     await page.emulateMedia({ reducedMotion: 'reduce' });
 
@@ -36,7 +36,7 @@ export class ProcessMiner {
   private static processEditorUrl(page: Page, pmv: string, file: string): string {
     const app = process.env.TEST_APP ?? 'designer';
     const baseUrl = process.env.CI ? 'http://localhost:4173' : 'http://localhost:3000';
-    return `?server=${ProcessMiner.serverUrl()}&app=${app}&pmv=${pmv}&file=${file}&miningUrl=${baseUrl}/mock.json`;
+    return `?server=${ProcessMiner.serverUrl()}&app=${app}&pmv=${pmv}&file=${file}&processUrl=${baseUrl}/mock.json`;
   }
 
   private static serverUrl(): string {

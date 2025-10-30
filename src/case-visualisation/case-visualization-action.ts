@@ -20,7 +20,7 @@ export interface CaseVisualizationAction extends Action {
 export interface ProcessData {
   processName: string;
   nodes: Node[];
-  activeElementId: string;
+  activeElementIds: string[];
   passedColor: string;
   activeColor: string;
 }
@@ -73,19 +73,21 @@ export class CaseVisualizationCommand extends Command {
   async populate(model: SModelRootImpl) {
     // fetches case process data from the provided url
     const data: ProcessData = await (await fetch(this.processData.url)).json();
-    let passedElementArgs: Args = { "color": data.passedColor };
-    let activedElementArgs: Args = { "color": data.activeColor };
+    const passedElementArgs: Args = { "color": data.passedColor };
+    const activedElementArgs: Args = { "color": data.activeColor };
     data.nodes.forEach(node => {
       const element = model.index.getById(node.id);
       if (element instanceof Edge || element instanceof ActivityNode || element instanceof EventNode || element instanceof GatewayNode) {
-        // Handle for passed elements
+        // Handle for passed element
         if (node.passed) {
           element.args = passedElementArgs;
+          element.cssClasses = ["passed"];
         }
 
         // Handle for active element
-        if (node.id === data.activeElementId) {
+        if (data.activeElementIds.includes(node.id)) {
           element.args = activedElementArgs;
+          element.cssClasses = ["active"];
         }
       }
     });

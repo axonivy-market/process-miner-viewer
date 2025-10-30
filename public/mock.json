@@ -119,5 +119,7 @@
   ],
   "activeColor": "#3B82F6",
   "passedColor": "#47C46B",
-  "activeElementId": "1951D3C5BF69ADB3-f26"
+  "activeElementIds": [
+    "1951D3C5BF69ADB3-f26"
+  ]
 }

@@ -34,12 +34,6 @@ body {
   background-color: var(--glsp-editor-background);
 }
 
-text.diagram-caption {
-  text-anchor: start;
-  fill: var(--glsp-editor-foreground);
-  font-size: 12pt;
-}
-
 .sprotty svg {
   width: 100%;
   height: 100%;
