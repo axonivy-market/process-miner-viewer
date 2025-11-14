@@ -25,7 +25,7 @@ import { Container } from 'inversify';
 import ivyNavigationModule from './navigate/di.config';
 import ivyViewerQuickActionModule from './quick-action/di.config';
 import { ivyStartupDiagramModule } from './startup';
-import { ivyMiningModule } from './process-mining-visualisation/di.config';
+import { ivyCaseVisualizationModule } from './case-visualisation/di.config';
 
 export interface IvyDiagramOptions extends IDiagramOptions {
   highlight: string;
@@ -43,7 +43,7 @@ export default function createContainer(options: IvyDiagramOptions): Container {
     ivyNavigationModule,
     ivyStartupDiagramModule,
     ivyKeyListenerModule,
-    ivyMiningModule,
+    ivyCaseVisualizationModule,
     {
       remove: [
         ivyLabelEditModule,

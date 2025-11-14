@@ -7,7 +7,7 @@ import type { MessageConnection } from 'vscode-jsonrpc';
 import createContainer from './di.config';
 import './index.css';
 import { getParameters, getServerDomain, isSecureConnection } from './url-helper';
-import { MiningUrl, MiningColor, setMiningColor, MiningTextColor, setMiningTextColor } from './process-mining-visualisation/mining-action';
+import { ProcessUrl } from './case-visualisation/case-visualization-action';
 
 const parameters = getParameters();
 const app = parameters.get('app') ?? 'designer';
@@ -16,8 +16,8 @@ if (!server) {
   server = getServerDomain().replace(app, '');
 }
 
-// read miningUrl from parameters
-const miningUrlParam = parameters.get('miningUrl') ?? 'http://localhost:3000/mock.json';
+// read processUrlParam from parameters
+const processUrlParam = parameters.get('processUrl') ?? 'http://localhost:3000/mock.json';
 const pmv = parameters.get('pmv') ?? '';
 const pid = parameters.get('pid') ?? '';
 const sourceUri = parameters.get('file') ?? '';
@@ -52,15 +52,8 @@ async function initialize(connectionProvider: MessageConnection, isReconnecting 
     theme
   });
 
-  // binds the mining url as const to be injected into the MiningCommand
-  container.bind(MiningUrl).toConstantValue({ url: miningUrlParam });
-  container.bind(MiningColor).toSelf().inSingletonScope();
-  container.bind(MiningTextColor).toSelf().inSingletonScope();
-
-  const colorInstance = container.get(MiningColor);
-  setMiningColor(colorInstance);
-  const textColorInstance = container.get(MiningTextColor);
-  setMiningTextColor(textColorInstance);
+  // binds the process url as const to be injected into the CaseVisualizationCommand
+  container.bind(ProcessUrl).toConstantValue({ url: processUrlParam });
 
   const diagramLoader = container.get(DiagramLoader);
   await diagramLoader.load({
