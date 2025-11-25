@@ -25,7 +25,7 @@ import { Container } from 'inversify';
 import ivyNavigationModule from './navigate/di.config';
 import ivyViewerQuickActionModule from './quick-action/di.config';
 import { ivyStartupDiagramModule } from './startup';
-import { ivyCaseVisualizationModule } from './case-visualisation/di.config';
+import { ivyCaseVisualizationModule } from './case-visualization/di.config';
 
 export interface IvyDiagramOptions extends IDiagramOptions {
   highlight: string;

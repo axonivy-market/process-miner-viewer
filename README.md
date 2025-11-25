@@ -93,21 +93,21 @@ If no such parameter is provided, a fallback ("http://localhost:3000/mock.json")
 
 ### Visualization
 
-All code to modify the mining visualization is located in [`src/case-visualisation`](src/case-visualisation).
+All code to modify the mining visualization is located in [`src/case-visualization`](src/case-visualization).
 
-[`di-config.ts`](src/case-visualisation/di.config.ts)<br>
-Used to register case-visualisation-action-handler, command and view to change the element properties (color).
+[`di-config.ts`](src/case-visualization/di.config.ts)<br>
+Used to register case-visualization-action-handler, command and view to change the element properties (color).
 
-[`action.ts`](src/case-visualisation/action.ts)<br>
+[`action.ts`](src/case-visualization/action.ts)<br>
 ActionHandler for the aseVisualizationAction
 
 [`case-visualization-action.ts`](src/process-mining-visualisation/mining-action.ts)<br>
 CaseProcessViewerCommand used to display case process data. CaseProcessViewerCommand (execute) is called when CaseProcessViewerAction is fired. Adds a parameter `passed` to each element in process data used to change color.
 
 [`public/mock.json`](public/mock.json)<br>
-mock-case-visualisation-data used when no processUrl url-parameter is specified
+mock-case-visualization-data used when no processUrl url-parameter is specified
 
-The case-visualisation is fired in [`src/startup.ts`](src/startup.ts) after the model is initialized.
+The case-visualization is fired in [`src/startup.ts`](src/startup.ts) after the model is initialized.
 
 ---
 

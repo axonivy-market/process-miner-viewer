@@ -7,7 +7,7 @@ import type { MessageConnection } from 'vscode-jsonrpc';
 import createContainer from './di.config';
 import './index.css';
 import { getParameters, getServerDomain, isSecureConnection } from './url-helper';
-import { ProcessUrl } from './case-visualisation/case-visualization-action';
+import { ProcessUrl } from './case-visualization/case-visualization-action';
 
 const parameters = getParameters();
 const app = parameters.get('app') ?? 'designer';
