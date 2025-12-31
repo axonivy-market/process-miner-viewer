@@ -44,7 +44,7 @@ The viewer will now run at `http://localhost:3000`. To access it you can open th
 - pmv=miner-test-project
 - file=/processes/Humantask/ProcurementRequestParallel.p.json
 
-e.g. [`http://localhost:3000?server=localhost:8081&app=designer&pmv=miner-test-project&file=/processes/Humantask/ProcurementRequestParallel.p.json`](http://localhost:3000?server=localhost:8081&app=designer&pmv=miner-test-project&file=/processes/Humantask/ProcurementRequestParallel.p.json)
+e.g. [`http://localhost:3000?server=localhost:8082&app=designer&pmv=miner-test-project&file=/processes/Humantask/ProcurementRequestParallel.p.json`](http://localhost:3000?server=localhost:8081&app=designer&pmv=miner-test-project&file=/processes/Humantask/ProcurementRequestParallel.p.json)
 
 ## Mining-Data
 

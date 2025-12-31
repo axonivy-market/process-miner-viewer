@@ -4,7 +4,7 @@
     {
       "type": "node",
       "id": "1951D3C5BF69ADB3-f0",
-      "passed": true
+      "passed": false
     },
     {
       "type": "node",
@@ -59,67 +59,89 @@
     {
       "type": "arrow",
       "id": "1951D3C5BF69ADB3-f15",
-      "passed": false
+      "passed": false,
+      "labelValue": "1",
+      "relatedValue": "0.5"
     },
     {
       "type": "arrow",
       "id": "1951D3C5BF69ADB3-f20",
-      "passed": true
+      "passed": true,
+      "labelValue": "1",
+      "relatedValue": "0.5"
     },
     {
       "type": "arrow",
       "id": "1951D3C5BF69ADB3-f13",
-      "passed": true
+      "passed": true,
+      "labelValue": "1",
+      "relatedValue": "0.5"
     },
     {
       "type": "arrow",
       "id": "1951D3C5BF69ADB3-f12",
-      "passed": true
+      "passed": true,
+      "labelValue": "1",
+      "relatedValue": "0.5"
     },
     {
       "type": "arrow",
       "id": "1951D3C5BF69ADB3-f9",
-      "passed": true
+      "passed": true,
+      "labelValue": "1",
+      "relatedValue": "0.5"
     },
     {
       "type": "arrow",
       "id": "1951D3C5BF69ADB3-f27",
-      "passed": true
+      "passed": true,
+      "labelValue": "1",
+      "relatedValue": "0.5"
     },
     {
       "type": "arrow",
       "id": "1951D3C5BF69ADB3-f21",
-      "passed": false
+      "passed": false,
+      "labelValue": "1",
+      "relatedValue": "0.5"
     },
     {
       "type": "arrow",
       "id": "1951D3C5BF69ADB3-f10",
-      "passed": true
+      "passed": true,
+      "labelValue": "1",
+      "relatedValue": "0.5"
     },
     {
       "type": "arrow",
       "id": "1951D3C5BF69ADB3-f11",
-      "passed": true
+      "passed": true,
+      "labelValue": "1",
+      "relatedValue": "0.5"
     },
     {
       "type": "arrow",
       "id": "1951D3C5BF69ADB3-f4",
-      "passed": true
+      "passed": true,
+      "labelValue": "1",
+      "relatedValue": "0.5"
     },
     {
       "type": "arrow",
       "id": "1951D3C5BF69ADB3-f18",
-      "passed": false
+      "passed": false,
+      "labelValue": "1",
+      "relatedValue": "0.5"
     },
     {
       "type": "arrow",
       "id": "1951D3C5BF69ADB3-f17",
-      "passed": false
+      "passed": false,
+      "labelValue": "1",
+      "relatedValue": "0.5"
     }
   ],
   "activeColor": "#3B82F6",
   "passedColor": "#47C46B",
-  "activeElementIds": [
-    "1951D3C5BF69ADB3-f26"
-  ]
+  "activeElementIds": ["1951D3C5BF69ADB3-f3"]
 }
