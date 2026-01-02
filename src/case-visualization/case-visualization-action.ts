@@ -17,8 +17,8 @@ export interface ProcessData {
   activeElementIds: string[];
   passedColor: string;
   activeColor: string;
-  numberOfInstances: number;
-  colors: string[];
+  frequencyColor: string;
+  frequencyTextColor: string;
 }
 
 export interface Node {
@@ -34,27 +34,50 @@ export class ProcessUrl {
   readonly url: string;
 }
 
+// @injectable()
+// export class MiningColor {
+//   colors: string[];
+// }
+
+// export let miningColor: MiningColor;
+
+// export function setMiningColor(color: MiningColor) {
+//   miningColor = color;
+// }
+
+// @injectable()
+// export class MiningTextColor {
+//   textColor: string[];
+// }
+
+// export let miningTextColor: MiningTextColor;
+
+// export function setMiningTextColor(textColor: MiningTextColor) {
+//   miningTextColor = textColor;
+// }
+
 @injectable()
-export class MiningColor {
-  colors: string[];
+export class FrequencyColorForCaseViewer {
+  color: string;
 }
 
-export let miningColor: MiningColor;
+export let frequencyColorForCaseViewer: FrequencyColorForCaseViewer;
 
-export function setMiningColor(color: MiningColor) {
-  miningColor = color;
+export function setFrequencyColorForCaseViewer(color: FrequencyColorForCaseViewer) {
+  frequencyColorForCaseViewer = color;
 }
 
 @injectable()
-export class MiningTextColor {
-  textColor: string[];
+export class FrequencyTextColorForCaseViewer {
+  textColor: string;
 }
 
-export let miningTextColor: MiningTextColor;
+export let frequencyTextColorForCaseViewer: FrequencyTextColorForCaseViewer;
 
-export function setMiningTextColor(textColor: MiningTextColor) {
-  miningTextColor = textColor;
+export function setFrequencyTextColorForCaseViewer(textColor: FrequencyTextColorForCaseViewer) {
+  frequencyTextColorForCaseViewer = textColor;
 }
+
 /**
  * Action which is fired when the Mining-Data is to be displayed
  */
@@ -78,6 +101,8 @@ export namespace CaseVisualizationAction {
 export class CaseVisualizationCommand extends Command {
   static readonly KIND = CaseVisualizationAction.KIND;
   @inject(ProcessUrl) protected processData: ProcessUrl;
+  @inject(FrequencyColorForCaseViewer) protected frequencyColorForCaseViewer: FrequencyColorForCaseViewer;
+  @inject(FrequencyTextColorForCaseViewer) protected frequencyTextColorForCaseViewer: FrequencyTextColorForCaseViewer;
   constructor(@inject(TYPES.Action) protected readonly action: CaseVisualizationAction) {
     super();
   }
@@ -92,10 +117,29 @@ export class CaseVisualizationCommand extends Command {
   async populate(model: SModelRootImpl) {
     // fetches case process data from the provided url
     const data: ProcessData = await (await fetch(this.processData.url)).json();
+    console.log('Data: ' + JSON.stringify(data));
+
     const passedElementArgs: Args = { color: data.passedColor };
     const activedElementArgs: Args = { color: data.activeColor };
+
+    this.frequencyColorForCaseViewer.color = data.frequencyColor;
+    this.frequencyTextColorForCaseViewer.textColor = data.frequencyTextColor;
     data.nodes.forEach(node => {
       const element = model.index.getById(node.id);
+
+      if (element instanceof Edge) {
+        console.log('Element is instance of Edge:', element);
+
+        const segments = this.edgeRouterRegistry.route(element, element.args);
+        console.log(segments);
+
+        const miningLabel = new MiningLabel(node.labelValue.toString(), node.relativeValue, segments);
+        console.log(miningLabel);
+
+        this.moveExistingLabel(element.editableLabel as GLabel, segments);
+        element.add(miningLabel);
+      }
+
       if (element instanceof Edge || element instanceof ActivityNode || element instanceof EventNode || element instanceof GatewayNode) {
         // Handle for passed element
         if (node.passed) {
@@ -108,13 +152,6 @@ export class CaseVisualizationCommand extends Command {
           element.args = activedElementArgs;
           element.cssClasses = ['active'];
         }
-      }
-
-      if (element instanceof Edge) {
-        const segments = this.edgeRouterRegistry.route(element, element.args);
-        const miningLabel = new MiningLabel(node.labelValue.toString(), node.relativeValue, segments);
-        this.moveExistingLabel(element.editableLabel as GLabel, segments);
-        element.add(miningLabel);
       }
     });
 

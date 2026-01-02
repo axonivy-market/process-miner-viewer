@@ -143,5 +143,7 @@
   ],
   "activeColor": "#3B82F6",
   "passedColor": "#47C46B",
-  "activeElementIds": ["1951D3C5BF69ADB3-f3"]
+  "activeElementIds": ["1951D3C5BF69ADB3-f3"],
+  "frequencyColor": "red",
+  "frequencyTextColor": "black"
 }
