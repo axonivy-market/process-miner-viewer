@@ -1,3 +1,18 @@
+let sharedCanvas: HTMLCanvasElement | null = null;
+let sharedCtx: CanvasRenderingContext2D | null = null;
+
+function getSharedContext(): CanvasRenderingContext2D {
+  if (!sharedCanvas) {
+    sharedCanvas = document.createElement('canvas');
+    sharedCanvas.width = sharedCanvas.height = 1;
+
+    sharedCtx = sharedCanvas.getContext('2d', {
+      willReadFrequently: true
+    })!;
+  }
+
+  return sharedCtx!;
+}
 export type ParsedColor = {
   r: number;
   g: number;
@@ -10,7 +25,8 @@ export function parseToRgba(color: string, fallback = '#47C46B'): ParsedColor {
   const canvas = document.createElement('canvas');
   canvas.width = canvas.height = 1;
 
-  const ctx = canvas.getContext('2d')!;
+  //   const ctx = canvas.getContext('2d')!;
+  const ctx = getSharedContext();
   ctx.clearRect(0, 0, 1, 1);
 
   // Baseline
