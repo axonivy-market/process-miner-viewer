@@ -3,6 +3,13 @@ import { Action, type Args, Command, type CommandExecutionContext, type CommandR
 import { inject, injectable } from 'inversify';
 import { EdgeRouterRegistry, SModelRootImpl, type RoutedPoint } from 'sprotty';
 import { MiningLabel } from './MiningLabel';
+import { getColor, getLightenColor } from '../utils/ColorUtils';
+import {
+  DEFAULT_ACTIVE_COLOR,
+  DEFAULT_FREQUENCY_COLOR,
+  DEFAULT_FREQUENCY_TEXT_COLOR,
+  DEFAULT_PASSED_COLOR
+} from '../constants/ColorConstants';
 
 export interface CaseVisualizationAction extends Action {
   kind: typeof CaseVisualizationAction.KIND;
@@ -33,28 +40,6 @@ export interface Node {
 export class ProcessUrl {
   readonly url: string;
 }
-
-// @injectable()
-// export class MiningColor {
-//   colors: string[];
-// }
-
-// export let miningColor: MiningColor;
-
-// export function setMiningColor(color: MiningColor) {
-//   miningColor = color;
-// }
-
-// @injectable()
-// export class MiningTextColor {
-//   textColor: string[];
-// }
-
-// export let miningTextColor: MiningTextColor;
-
-// export function setMiningTextColor(textColor: MiningTextColor) {
-//   miningTextColor = textColor;
-// }
 
 @injectable()
 export class FrequencyColorForCaseViewer {
@@ -117,27 +102,27 @@ export class CaseVisualizationCommand extends Command {
   async populate(model: SModelRootImpl) {
     // fetches case process data from the provided url
     const data: ProcessData = await (await fetch(this.processData.url)).json();
-    console.log('Data: ' + JSON.stringify(data));
+    const passedElementArgs: Args = { color: getColor(data.passedColor, DEFAULT_PASSED_COLOR) };
+    const activedElementArgs: Args = { color: getColor(data.activeColor, DEFAULT_ACTIVE_COLOR) };
 
-    const passedElementArgs: Args = { color: data.passedColor };
-    const activedElementArgs: Args = { color: data.activeColor };
+    document.documentElement.style.setProperty('--passed-color', getColor(data.passedColor, DEFAULT_PASSED_COLOR));
+    document.documentElement.style.setProperty('--active-color', getColor(data.activeColor, DEFAULT_ACTIVE_COLOR));
+    document.documentElement.style.setProperty('--active-color-lighten', getLightenColor(data.activeColor, DEFAULT_ACTIVE_COLOR));
 
-    this.frequencyColorForCaseViewer.color = data.frequencyColor;
-    this.frequencyTextColorForCaseViewer.textColor = data.frequencyTextColor;
+    this.frequencyColorForCaseViewer.color = getColor(data.frequencyColor, DEFAULT_FREQUENCY_COLOR);
+    this.frequencyTextColorForCaseViewer.textColor = getColor(data.frequencyTextColor, DEFAULT_FREQUENCY_TEXT_COLOR);
+
     data.nodes.forEach(node => {
       const element = model.index.getById(node.id);
-
       if (element instanceof Edge) {
-        console.log('Element is instance of Edge:', element);
-
         const segments = this.edgeRouterRegistry.route(element, element.args);
-        console.log(segments);
+        const nodeLabelValue = node.labelValue;
 
-        const miningLabel = new MiningLabel(node.labelValue.toString(), node.relativeValue, segments);
-        console.log(miningLabel);
-
+        const miningLabel = new MiningLabel(nodeLabelValue.toString(), segments);
         this.moveExistingLabel(element.editableLabel as GLabel, segments);
-        element.add(miningLabel);
+        if (nodeLabelValue > 0) {
+          element.add(miningLabel);
+        }
       }
 
       if (element instanceof Edge || element instanceof ActivityNode || element instanceof EventNode || element instanceof GatewayNode) {
