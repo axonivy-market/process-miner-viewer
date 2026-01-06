@@ -4,146 +4,145 @@
     {
       "type": "node",
       "id": "1951D3C5BF69ADB3-f0",
-      "passed": false
+      "passed": true,
+      "labelValue": 1
     },
     {
       "type": "node",
       "id": "1951D3C5BF69ADB3-f19",
-      "passed": true
+      "passed": true,
+      "labelValue": 1
     },
     {
       "type": "node",
       "id": "1951D3C5BF69ADB3-f3",
-      "passed": true
+      "passed": true,
+      "labelValue": 2
     },
     {
       "type": "node",
       "id": "1951D3C5BF69ADB3-f2",
-      "passed": true
+      "passed": true,
+      "labelValue": 2
     },
     {
       "type": "node",
       "id": "1951D3C5BF69ADB3-f6",
-      "passed": true
+      "passed": true,
+      "labelValue": 1
     },
     {
       "type": "node",
       "id": "1951D3C5BF69ADB3-f5",
-      "passed": true
+      "passed": true,
+      "labelValue": 1
     },
     {
       "type": "node",
       "id": "1951D3C5BF69ADB3-f7",
-      "passed": true
+      "passed": true,
+      "labelValue": 3
     },
     {
       "type": "node",
       "id": "1951D3C5BF69ADB3-f26",
-      "passed": true
+      "passed": true,
+      "labelValue": 2
     },
     {
       "type": "node",
       "id": "1951D3C5BF69ADB3-f16",
-      "passed": false
+      "passed": false,
+      "labelValue": 0
     },
     {
       "type": "node",
       "id": "1951D3C5BF69ADB3-f8",
-      "passed": false
+      "passed": false,
+      "labelValue": 0
     },
     {
       "type": "node",
       "id": "1951D3C5BF69ADB3-f1",
-      "passed": false
+      "passed": false,
+      "labelValue": 0
     },
     {
       "type": "arrow",
       "id": "1951D3C5BF69ADB3-f15",
       "passed": false,
-      "labelValue": "1",
-      "relatedValue": "0.5"
+      "labelValue": 0
     },
     {
       "type": "arrow",
       "id": "1951D3C5BF69ADB3-f20",
       "passed": true,
-      "labelValue": "1",
-      "relatedValue": "0.5"
+      "labelValue": 2
     },
     {
       "type": "arrow",
       "id": "1951D3C5BF69ADB3-f13",
       "passed": true,
-      "labelValue": "1",
-      "relatedValue": "0.5"
+      "labelValue": 2
     },
     {
       "type": "arrow",
       "id": "1951D3C5BF69ADB3-f12",
       "passed": true,
-      "labelValue": "1",
-      "relatedValue": "0.5"
+      "labelValue": 4
     },
     {
       "type": "arrow",
       "id": "1951D3C5BF69ADB3-f9",
       "passed": true,
-      "labelValue": "1",
-      "relatedValue": "0.5"
+      "labelValue": 3
     },
     {
       "type": "arrow",
       "id": "1951D3C5BF69ADB3-f27",
       "passed": true,
-      "labelValue": "1",
-      "relatedValue": "0.5"
+      "labelValue": 1
     },
     {
       "type": "arrow",
       "id": "1951D3C5BF69ADB3-f21",
       "passed": false,
-      "labelValue": "1",
-      "relatedValue": "0.5"
+      "labelValue": 0
     },
     {
       "type": "arrow",
       "id": "1951D3C5BF69ADB3-f10",
       "passed": true,
-      "labelValue": "1",
-      "relatedValue": "0.5"
+      "labelValue": 2
     },
     {
       "type": "arrow",
       "id": "1951D3C5BF69ADB3-f11",
       "passed": true,
-      "labelValue": "1",
-      "relatedValue": "0.5"
+      "labelValue": 2
     },
     {
       "type": "arrow",
       "id": "1951D3C5BF69ADB3-f4",
       "passed": true,
-      "labelValue": "1",
-      "relatedValue": "0.5"
+      "labelValue": 3
     },
     {
       "type": "arrow",
       "id": "1951D3C5BF69ADB3-f18",
       "passed": false,
-      "labelValue": "1",
-      "relatedValue": "0.5"
+      "labelValue": 0
     },
     {
       "type": "arrow",
       "id": "1951D3C5BF69ADB3-f17",
       "passed": false,
-      "labelValue": "1",
-      "relatedValue": "0.5"
+      "labelValue": 0
     }
   ],
   "activeColor": "#3B82F6",
   "passedColor": "#47C46B",
-  "activeElementIds": ["1951D3C5BF69ADB3-f3"],
+  "activeElementIds": ["1951D3C5BF69ADB3-f26"],
   "frequencyColor": "red",
   "frequencyTextColor": "black"
 }
