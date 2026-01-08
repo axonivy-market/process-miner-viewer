@@ -102,6 +102,7 @@ export class CaseVisualizationCommand extends Command {
   async populate(model: SModelRootImpl) {
     // fetches case process data from the provided url
     const data: ProcessData = await (await fetch(this.processData.url)).json();
+
     const passedElementArgs: Args = { color: getColor(data.passedColor, DEFAULT_PASSED_COLOR) };
     const activedElementArgs: Args = { color: getColor(data.activeColor, DEFAULT_ACTIVE_COLOR) };
 
@@ -151,7 +152,7 @@ export class CaseVisualizationCommand extends Command {
     return this.execute(context);
   }
 
-  // moves exisitng edge-label in regard to edge-segment orientation to avoid overlap
+  // moves existing edge-label in regard to edge-segment orientation to avoid overlap
   moveExistingLabel = (label: GLabel, segments: Array<RoutedPoint>) => {
     if (!label || label.text === '' || segments.length < 2) {
       return;
