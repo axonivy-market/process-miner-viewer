@@ -7,7 +7,13 @@ import type { MessageConnection } from 'vscode-jsonrpc';
 import createContainer from './di.config';
 import './index.css';
 import { getParameters, getServerDomain, isSecureConnection } from './url-helper';
-import { ProcessUrl } from './case-visualization/case-visualization-action';
+import {
+  FrequencyColorForCaseViewer,
+  FrequencyTextColorForCaseViewer,
+  ProcessUrl,
+  setFrequencyColorForCaseViewer,
+  setFrequencyTextColorForCaseViewer
+} from './case-visualization/case-visualization-action';
 
 const parameters = getParameters();
 const app = parameters.get('app') ?? 'designer';
@@ -54,6 +60,13 @@ async function initialize(connectionProvider: MessageConnection, isReconnecting 
 
   // binds the process url as const to be injected into the CaseVisualizationCommand
   container.bind(ProcessUrl).toConstantValue({ url: processUrlParam });
+  container.bind(FrequencyColorForCaseViewer).toSelf().inSingletonScope();
+  container.bind(FrequencyTextColorForCaseViewer).toSelf().inSingletonScope();
+
+  const colorInstance = container.get(FrequencyColorForCaseViewer);
+  setFrequencyColorForCaseViewer(colorInstance);
+  const textColorInstance = container.get(FrequencyTextColorForCaseViewer);
+  setFrequencyTextColorForCaseViewer(textColorInstance);
 
   const diagramLoader = container.get(DiagramLoader);
   await diagramLoader.load({

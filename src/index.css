@@ -51,3 +51,30 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
+
+/* .passed circle.sprotty-node, */
+.passed circle.sprotty-node.sprotty-task-node {
+  stroke: var(--passed-color) !important;
+}
+
+.active circle.sprotty-node.sprotty-task-node {
+  stroke: var(--active-color) !important;
+  fill: var(--active-color-lighten) !important;
+}
+
+.embeddedProcessElement.active .sprotty-node:not(.sprotty-task-node),
+.scriptBpmnElement.active .sprotty-node:not(.sprotty-task-node),
+.userBpmnElement.active .sprotty-node:not(.sprotty-task-node),
+.manualBpmnElement.active .sprotty-node:not(.sprotty-task-node),
+.sendBpmnElement.active .sprotty-node:not(.sprotty-task-node),
+.ruleBpmnElement.active .sprotty-node:not(.sprotty-task-node),
+.receiveBpmnElement.active .sprotty-node:not(.sprotty-task-node),
+.taskSwitchGateway.active .sprotty-node:not(.sprotty-task-node),
+.serviceBpmnElement.active .sprotty-node:not(.sprotty-task-node),
+.genericBpmnElement.active .sprotty-node:not(.sprotty-task-node) {
+  fill: var(--active-color-lighten) !important;
+}
+
+.userTask.active .sprotty-node {
+  fill: var(--active-color-lighten);
+}
