@@ -22,9 +22,6 @@ export type ParsedColor = {
 };
 
 export function parseToRgba(color: string, fallback = '#47C46B'): ParsedColor {
-  const canvas = document.createElement('canvas');
-  canvas.width = canvas.height = 1;
-
   const ctx = getSharedContext();
   ctx.clearRect(0, 0, 1, 1);
 
