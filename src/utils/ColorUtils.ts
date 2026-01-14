@@ -1,3 +1,5 @@
+import { DEFAULT_PASSED_COLOR } from '../constants/ColorConstants';
+
 let sharedCanvas: HTMLCanvasElement | null = null;
 let sharedCtx: CanvasRenderingContext2D | null = null;
 
@@ -21,10 +23,8 @@ export type ParsedColor = {
   valid: boolean;
 };
 
-export function parseToRgba(color: string, fallback = '#47C46B'): ParsedColor {
-  const canvas = document.createElement('canvas');
-  canvas.width = canvas.height = 1;
-
+// Parses a color string to RGBA components. If the color is invalid, it falls back to the specified fallback color.
+export function parseToRgba(color: string, fallback = DEFAULT_PASSED_COLOR): ParsedColor {
   const ctx = getSharedContext();
   ctx.clearRect(0, 0, 1, 1);
 
@@ -53,6 +53,7 @@ export function parseToRgba(color: string, fallback = '#47C46B'): ParsedColor {
   };
 }
 
+// Converts RGB color values to HSL (Hue, Saturation, Lightness).
 export function rgbToHsl(r: number, g: number, b: number) {
   r /= 255;
   g /= 255;
@@ -86,6 +87,7 @@ export function rgbToHsl(r: number, g: number, b: number) {
   return { h, s, l };
 }
 
+// Converts HSL color values to RGB (Red, Green, Blue).
 export function hslToRgb(h: number, s: number, l: number) {
   let r: number, g: number, b: number;
 
@@ -116,11 +118,13 @@ export function hslToRgb(h: number, s: number, l: number) {
   };
 }
 
+// Returns the color, or the fallback color if the color is invalid.
 export function getColor(color: string, fallback: string): string {
   const parsed = parseToRgba(color, fallback);
   return parsed.valid ? color : fallback;
 }
 
+// Lightens the given color by the specified amount (default is 0.25).
 export function getLightenColor(color: string, fallback: string, amount = 0.25): string {
   const { r, g, b, a } = parseToRgba(color, fallback);
   const hsl = rgbToHsl(r, g, b);
