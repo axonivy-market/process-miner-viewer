@@ -45,7 +45,7 @@
     "typescript": "~5.8.0",
     "path-browserify": "^1.0.1",
     "reflect-metadata": "^0.2.2",
-    "vite": "6.4.2",
+    "vite": "8.1.0",
     "vite-tsconfig-paths": "^5.1.4"
   },
   "overrides": {
