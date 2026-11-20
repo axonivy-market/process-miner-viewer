@@ -1,10 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "local>axonivy/renovate-config:npm",
-    "group:allNonMajor",
-    "npm:unpublishSafe",
-    "schedule:earlyMondays"
-  ],
-  "rebaseWhen": "conflicted"
+    "local>axonivy-market/renovate-config"
+  ]
 }
